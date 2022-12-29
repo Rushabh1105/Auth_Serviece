@@ -37,6 +37,20 @@ class UserRepository{
             throw {error};
         }
     }
+
+    async getByEmail(userEmail){
+        try {
+            const user = await User.findOne({
+                where : {
+                    email : userEmail,
+                }
+            });
+            return user;
+        } catch (error) {
+            console.log("Error at user repository level");
+            throw {error};
+        }
+    }
 }
 
 module.exports = UserRepository;
