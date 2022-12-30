@@ -70,8 +70,30 @@ const isAuthinticated = async (req, res) => {
 }
 
 
+const isAdmin = async (req, res) => {
+    try {
+        const response = await userServiece.isAdmin(req.body.id);
+        return res.status(201).json({
+            success : true,
+            message : "varified a user role",
+            data : response,
+            err : {},
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data : {},
+            message : "Something went wrong",
+            success : false,
+            err : error,
+        }); 
+    }
+}
+
+
 module.exports = {
     createUser,
     signIn,
     isAuthinticated,
+    isAdmin
 }

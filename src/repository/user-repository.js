@@ -1,4 +1,4 @@
-const {User} = require("../models/index");
+const {User, Role} = require("../models/index");
 
 class UserRepository{
     async createUser(data){
@@ -46,6 +46,19 @@ class UserRepository{
                 }
             });
             return user;
+        } catch (error) {
+            console.log("Error at user repository level");
+            throw {error};
+        }
+    }
+
+    async isAdmin(userId){
+        try {
+            const user = await User.findByPk(userId);
+            const adminRole = await Role.findOne({
+                name : "ADMIN",
+            });
+            return user.hasRole(adminRole);
         } catch (error) {
             console.log("Error at user repository level");
             throw {error};
