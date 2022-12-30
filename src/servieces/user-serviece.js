@@ -51,6 +51,23 @@ class UserServiece{
         }
     }
 
+    async isAuthenticated(token){
+        try {
+            const isVarifiedToken = this.varifyToken(token);
+            if(!isVarifiedToken){
+                throw {error : "invalid token"};
+            }
+            const user = this.userRepository.getById(isVarifiedToken.id);
+            if(!user){
+                throw {error : "No user found"};
+            }
+            return user.id;
+        } catch (error) {
+            console.log("Error at user signin layer");
+            throw {error};
+        }
+    }
+
     async createToken(user){
         try {
            const result = jwt.sign(user, JWT_KEY, {expiresIn : '1d'});
