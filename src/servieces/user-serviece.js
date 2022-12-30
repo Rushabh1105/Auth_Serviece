@@ -33,6 +33,10 @@ class UserServiece{
     async signIn(email, password){
         try {
             const user = await this.userRepository.getByEmail(email);
+            if(!user){
+                console.log("user does not match");
+                throw {error : "Incorrect user"};
+            }
             const passwordMatch = await this.checkPassword(password, user.password);
             if(!passwordMatch){
                 console.log("password does not match");
