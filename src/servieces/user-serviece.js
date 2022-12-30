@@ -53,11 +53,12 @@ class UserServiece{
 
     async isAuthenticated(token){
         try {
-            const isVarifiedToken = this.varifyToken(token);
+            const isVarifiedToken = await this.varifyToken(token);
+            console.log(isVarifiedToken)
             if(!isVarifiedToken){
                 throw {error : "invalid token"};
             }
-            const user = this.userRepository.getById(isVarifiedToken.id);
+            const user = await this.userRepository.getByEmail(isVarifiedToken.email);
             if(!user){
                 throw {error : "No user found"};
             }
@@ -70,7 +71,7 @@ class UserServiece{
 
     async createToken(user){
         try {
-           const result = jwt.sign(user, JWT_KEY, {expiresIn : '1d'});
+           const result = jwt.sign(user, JWT_KEY, {expiresIn : '2d'});
            return result; 
         } catch (error) {
             console.log("something went wrong in token creation");
